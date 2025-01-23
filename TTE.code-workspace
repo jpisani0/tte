@@ -1,0 +1,40 @@
+{
+	"folders": [
+		{
+			"path": ".",
+		}
+	],
+	"settings": {
+		"C_Cpp.default.includePath": ["./include"],
+		"doxdocgen.file.fileOrder": [
+			"file",
+			"author",
+			"brief",
+			"version",
+			"date"
+		],
+		"todo-tree.highlights.defaultHighlight": {
+			"type": "text-and-comment"
+		},
+		"todo-tree.general.tags": [
+			"TODO",
+			"REVIEW",
+			"FIXME",
+			"REMOVE"
+		],
+		"todo-tree.highlights.customHighlight": {
+			"TODO":{
+					"icon": "check",
+					"iconColour": "green",
+					"foreground": "black",
+					"background": "green"
+			},
+			"REVIEW":{
+					"icon": "eye",
+					"iconColour": "blue",
+					"foreground": "black",
+					"background": "blue"
+			}
+		}
+	}
+}
