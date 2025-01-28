@@ -5,6 +5,9 @@
 		}
 	],
 	"settings": {
+		"cmake.buildDirectory": "${workspaceFolder}/build",
+		"cmake.generator": "Ninja",
+		"cmake.configureOnOpen": false,
 		"C_Cpp.default.includePath": ["./include"],
 		"doxdocgen.file.fileOrder": [
 			"file",
