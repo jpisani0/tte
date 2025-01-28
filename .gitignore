@@ -1,0 +1,6 @@
+# Keep CMake build output dirs but do not track any of the artifacts
+build/*
+bin/*
+
+!build/.gitkeep
+!bin/.gitkeep
