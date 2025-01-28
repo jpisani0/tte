@@ -11,11 +11,21 @@
 
 #define clearScreen() printf("\e[1;1H]\e[2J]") // Clears the terminal and places cursor in top right corner
 
+/**
+ * @brief 
+ * 
+ * @return int 
+ */
 int save_current_terminal()
 {
     
 }
 
+/**
+ * @brief Create a new terminal to host tte in separate from what was being used before
+ * 
+ * @return int 
+ */
 int create_new_terminal()
 {
 
