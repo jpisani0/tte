@@ -32,10 +32,10 @@ void enableRawMode(termios *originalTerminal)
     }
 
     // Set the new attributes for the raw terminal
-    rawTerminal.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN); // local flags
+    rawTerminal.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);          // local flags
     rawTerminal.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON); // input flags
-    rawTerminal.c_oflag &= ~(OPOST);
-    rawTerminal.c_cflag |= CS8;
+    rawTerminal.c_oflag &= ~(OPOST);                                  // output flags
+    rawTerminal.c_cflag |= CS8;                                       // control flags
 
     // Set terminal so that read() wait for at least 1 byte before returning
     rawTerminal.c_cc[VMIN] = 1;
@@ -51,13 +51,13 @@ void enableRawMode(termios *originalTerminal)
 /**
  * @brief Take the terminal out of "raw" mode by restoring original attributes
  * 
- * @param originalTerminal 
+ * @param originalTerminal - the original terminal attributes to be restored before exiting
  */
 void disableRawMode(termios *originalTerminal)
 {
     if(tcsetattr(STDIN_FILENO, TCSAFLUSH, originalTerminal) == TERMINAL_ERROR)
     {
-        perror("disableRawMode(): could not restore original terminal aatributes\n");
+        perror("disableRawMode(): could not restore original terminal attributes\n");
         exit(EXIT_FAILURE);
     }
 }

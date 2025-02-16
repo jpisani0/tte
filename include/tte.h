@@ -17,4 +17,13 @@
 
 #define NEWLINE "\r\n" // move cursor to beginning of next line
 
+#define ESCAPE_DECIMAL 27 // decimal value of the escape control code
+#define ESCAPE_STRING "\x1b"  // precedes all escape sequences
+
+// Arrow Keys
+#define UP_ARROW    (ESCAPE "[A")
+#define DOWN_ARROW  (ESCAPE "[B")
+#define RIGHT_ARROW (ESCAPE "[C")
+#define LEFT_ARROW  (ESCAPE "[D")
+
 #endif
