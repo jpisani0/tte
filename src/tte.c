@@ -20,34 +20,36 @@ int main(int argc, char** argv)
     // Read the input to the terminal as it comes in
     while(read(STDIN_FILENO, &c, 1) == 1)
     {
+        // Exit if q is entered (just for testing for now)
         if(c == 'q' || c == 'Q')
         {
             printf("Exiting..." NEWLINE);
             fflush(stdout); // Immediate output to avoid buffering issues
             break;
         }
-        else if(c == ESCAPE_DECIMAL)
+        else if(c == ESCAPE_CHARACTER)
         {
-            char stuff[2] = "";
+            // If the escape sequence is caught, check which control sequence it is
+            char controlSequence[2] = "";
 
-            read(STDIN_FILENO, &stuff[0], 1);
-            read(STDIN_FILENO, &stuff[1], 1);
+            read(STDIN_FILENO, &controlSequence[0], 1);
+            read(STDIN_FILENO, &controlSequence[1], 1);
 
-            if(stuff[0] == '[')
+            if(controlSequence[0] == CONTROL_SEQUENCE_INTRODUCER)
             {
-                if(stuff[1] == 'A')
+                if(controlSequence[1] == UP_ARROW)
                 {
                     printf("Up Arrow" NEWLINE);
                 }
-                else if(stuff[1] == 'B')
+                else if(controlSequence[1] == DOWN_ARROW)
                 {
                     printf("Down Arrow" NEWLINE);
                 }
-                else if(stuff[1] == 'C')
+                else if(controlSequence[1] == RIGHT_ARROW)
                 {
                     printf("Right Arrow" NEWLINE);
                 }
-                else if(stuff[1] == 'D')
+                else if(controlSequence[1] == LEFT_ARROW)
                 {
                     printf("Left Arrow" NEWLINE);
                 }
@@ -56,9 +58,10 @@ int main(int argc, char** argv)
         else
         {
             // Standard character
-            printf("You entered: %c" NEWLINE, c);
-            fflush(stdout); // Immediate output to avoid buffering issues
+            printf("%c" NEWLINE, c);
         }
+
+        fflush(stdout); // Immediate output to avoid buffering issues
     }
 
     disableRawMode(&originalTerminal);
