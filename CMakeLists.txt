@@ -13,8 +13,8 @@ project(tte)
 
 # Set the source files for the project
 set(SOURCES
-    src/main.c
     src/tte.c
+    src/terminal.c
 )
 
 # Add the program executable file

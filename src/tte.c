@@ -1,32 +1,23 @@
 /**
  * @file tte.c
  * @author J. Pisani (jgp9201@gmail.com)
- * @brief Functions supporting the tte program
+ * @brief Main driver for tte
  * @version 0.1
- * @date 2025-01-25
+ * @date 2025-01-22
  */
 
-#include <termios.h>
-#include <stdio.h>
+#include "tte.h"
 
-#define clearScreen() printf("\e[1;1H]\e[2J]") // Clears the terminal and places cursor in top right corner
-
-/**
- * @brief 
- * 
- * @return int 
- */
-int save_current_terminal()
+int main(int argc, char** argv)
 {
+    char c = 0;
+
+    // Put terminal into raw mode
+    enableRawMode();
+
     
-}
 
-/**
- * @brief Create a new terminal to host tte in separate from what was being used before
- * 
- * @return int 
- */
-int create_new_terminal()
-{
+    disableRawMode();
 
+    return 0;
 }

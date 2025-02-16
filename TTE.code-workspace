@@ -38,6 +38,7 @@
 					"foreground": "black",
 					"background": "blue"
 			}
-		}
+		},
+		"cmake.options.statusBarVisibility": "compact"
 	}
 }
