@@ -15,4 +15,6 @@
 
 #include "terminal.h"
 
+#define NEWLINE "\r\n" // move cursor to beginning of next line
+
 #endif

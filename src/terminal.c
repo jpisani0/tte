@@ -11,36 +11,53 @@
 
 #include "terminal.h"
 
-#define LOCAL_FLAG_ATTS (ECHO | ICANON | ISIG | IEXTEN)
-#define INPUT_FLAG_ATTS (BRKINT | ICRNL | INPCK | ISTRIP | IXON)
-#define OUTPUT_FLAG_ATTS (OPOST)
-#define CONTROL_FLAG_ATTS (CS8)
+#define TERMINAL_ERROR -1
 
 /**
- * @brief Put the terminal into raw mode
+ * @brief Save original terminal attributes and place the terminal into "raw" mode
  * 
- * @param rawTerminal 
+ * @param originalTerminal - the original terminal attributes to be saved before entering "raw" mode
  */
-void enableRawMode(void)
+void enableRawMode(termios *originalTerminal)
 {
+    const char* functionName = "enableRawMode():";
     termios rawTerminal;
 
-    rawTerminal.c_lflag &= ~(LOCAL_FLAG_ATTS);
-    rawTerminal.c_iflag &= ~(INPUT_FLAG_ATTS);
-    rawTerminal.c_oflag &= ~(OUTPUT_FLAG_ATTS);
-    rawTerminal.c_cflag |= (CONTROL_FLAG_ATTS);
+    // REVIEW: should we reset the terminal before exiting if there was an issue when setting attr?
+    // Save the original terminal attributes
+    if(tcgetattr(STDIN_FILENO, originalTerminal) == TERMINAL_ERROR)
+    {
+        perror("enableRawMode(): failed to get original terminal attributes\n");
+        exit(EXIT_FAILURE);
+    }
 
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &rawTerminal);
+    // Set the new attributes for the raw terminal
+    rawTerminal.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN); // local flags
+    rawTerminal.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON); // input flags
+    rawTerminal.c_oflag &= ~(OPOST);
+    rawTerminal.c_cflag |= CS8;
+
+    // Set terminal so that read() wait for at least 1 byte before returning
+    rawTerminal.c_cc[VMIN] = 1;
+    rawTerminal.c_cc[VTIME] = 0;
+
+    if(tcsetattr(STDIN_FILENO, TCSAFLUSH, &rawTerminal) == TERMINAL_ERROR)
+    {
+        perror("enableRawMode(): failed to set terminal in raw mode\n");
+        exit(EXIT_FAILURE);
+    }
 }
 
-void disableRawMode(void)
+/**
+ * @brief Take the terminal out of "raw" mode by restoring original attributes
+ * 
+ * @param originalTerminal 
+ */
+void disableRawMode(termios *originalTerminal)
 {
-    termios originalTerminal;
-
-    originalTerminal.c_lflag |= (LOCAL_FLAG_ATTS);
-    originalTerminal.c_iflag |= (INPUT_FLAG_ATTS);
-    originalTerminal.c_oflag |= (OUTPUT_FLAG_ATTS);
-    originalTerminal.c_cflag &= ~(CONTROL_FLAG_ATTS);
-
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &originalTerminal);
+    if(tcsetattr(STDIN_FILENO, TCSAFLUSH, originalTerminal) == TERMINAL_ERROR)
+    {
+        perror("disableRawMode(): could not restore original terminal aatributes\n");
+        exit(EXIT_FAILURE);
+    }
 }

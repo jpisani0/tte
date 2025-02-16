@@ -16,7 +16,7 @@
 
 typedef struct termios termios;
 
-void enableRawMode(void);
-void disableRawMode(void);
+void enableRawMode(termios *originalTerminal);
+void disableRawMode(termios *originalTerminal);
 
 #endif
