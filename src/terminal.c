@@ -61,3 +61,25 @@ void disableRawMode(termios *originalTerminal)
         exit(EXIT_FAILURE);
     }
 }
+
+/**
+ * @brief Move the cursor relatively from its current location
+ * 
+ * @param distance - spaces to move the cursor
+ * @param direction - direction to move the cursor. UP_ARROW, DOWN_ARROW, RIGHT_ARROW, LEFT_ARROW
+ */
+void moveCursorRelative(int distance, char direction)
+{
+    printf(ESCAPE_STRING "[%d%c", distance, direction);
+}
+
+/**
+ * @brief Move the cursor to a specific location
+ * 
+ * @param col - column to move the cursor to 
+ * @param row - row to move the cursor to 
+ */
+void moveCursorAbsolute(int col, int row)
+{
+    printf(ESCAPE_STRING "[%d;%dH", col, row);
+}

@@ -53,19 +53,19 @@ int main(int argc, char** argv)
             {
                 if(escapeSequence[1] == UP_ARROW)
                 {
-                    printf("Up Arrow" NEWLINE);
+                    moveCursorRelative(1, UP_ARROW);
                 }
                 else if(escapeSequence[1] == DOWN_ARROW)
                 {
-                    printf("Down Arrow" NEWLINE);
+                    moveCursorRelative(1, DOWN_ARROW);
                 }
                 else if(escapeSequence[1] == RIGHT_ARROW)
                 {
-                    printf("Right Arrow" NEWLINE);
+                    moveCursorRelative(1, RIGHT_ARROW);
                 }
                 else if(escapeSequence[1] == LEFT_ARROW)
                 {
-                    printf("Left Arrow" NEWLINE);
+                    moveCursorRelative(1, LEFT_ARROW);
                 }
             }
         }
@@ -78,6 +78,7 @@ int main(int argc, char** argv)
         fflush(stdout); // Immediate output to avoid buffering issues
     }
 
+    // Disable raw mode by setting the original terminal attributes
     disableRawMode(&originalTerminal);
 
     return 0;
