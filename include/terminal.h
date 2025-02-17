@@ -1,7 +1,7 @@
 /**
  * @file terminal.h
  * @author J. Pisani (jgp9201@gmail.com)
- * @brief Contains functions for manipulating the terminal
+ * @brief Contains functions for getting input from, sending output to, and manipulating the terminal
  * @version 0.1
  * @date 2025-01-26
  */

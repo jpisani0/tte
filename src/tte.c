@@ -21,35 +21,49 @@ int main(int argc, char** argv)
     while(read(STDIN_FILENO, &c, 1) == 1)
     {
         // Exit if q is entered (just for testing for now)
-        if(c == 'q' || c == 'Q')
+        if(c == EXIT_COMMAND)
         {
-            printf("Exiting..." NEWLINE);
-            fflush(stdout); // Immediate output to avoid buffering issues
-            break;
+            printf("Are you sure you want to exit? (y/N) ");
+            fflush(stdout);
+
+            char answer = 0;
+            read(STDIN_FILENO, &answer, 1);
+
+            if(answer == CONFIRM_LOWER || answer == CONFIRM_UPPER)
+            {
+                printf(NEWLINE "Exiting..." NEWLINE);
+                fflush(stdout); // Immediate output to avoid buffering issues
+                break;
+            }
+            else
+            {
+                printf(NEWLINE);
+                fflush(stdout);
+            }
         }
         else if(c == ESCAPE_CHARACTER)
         {
             // If the escape sequence is caught, check which control sequence it is
-            char controlSequence[2] = "";
+            char escapeSequence[2] = "";
 
-            read(STDIN_FILENO, &controlSequence[0], 1);
-            read(STDIN_FILENO, &controlSequence[1], 1);
+            read(STDIN_FILENO, &escapeSequence[0], 1);
+            read(STDIN_FILENO, &escapeSequence[1], 1);
 
-            if(controlSequence[0] == CONTROL_SEQUENCE_INTRODUCER)
+            if(escapeSequence[0] == CONTROL_SEQUENCE_INTRODUCER)
             {
-                if(controlSequence[1] == UP_ARROW)
+                if(escapeSequence[1] == UP_ARROW)
                 {
                     printf("Up Arrow" NEWLINE);
                 }
-                else if(controlSequence[1] == DOWN_ARROW)
+                else if(escapeSequence[1] == DOWN_ARROW)
                 {
                     printf("Down Arrow" NEWLINE);
                 }
-                else if(controlSequence[1] == RIGHT_ARROW)
+                else if(escapeSequence[1] == RIGHT_ARROW)
                 {
                     printf("Right Arrow" NEWLINE);
                 }
-                else if(controlSequence[1] == LEFT_ARROW)
+                else if(escapeSequence[1] == LEFT_ARROW)
                 {
                     printf("Left Arrow" NEWLINE);
                 }

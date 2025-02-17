@@ -1,7 +1,7 @@
 /**
  * @file terminal.c
  * @author J. Pisani (jgp9201@gmail.com)
- * @brief Functions for manipulating the temrinal
+ * @brief Functions for getting input from, sending output to, and manipulating the terminal
  * @version 0.1
  * @date 2025-01-25
  */
