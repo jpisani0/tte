@@ -18,7 +18,8 @@ int main(int argc, char** argv)
     enableRawMode(&originalTerminal);
 
     // Clear the terminal screen
-    clearScreen();
+    printf(CLEAR_SCREEN);
+    fflush(stdout);
 
     // Read the input to the terminal as it comes in
     while(read(STDIN_FILENO, &c, 1) == 1)

@@ -22,6 +22,11 @@ typedef struct termios termios;
 #define ESCAPE_STRING "\x1b" // Escape sequence for formatted strings. Can also use '\e'.
 #define NEWLINE "\r\n" // move cursor to beginning of next line
 
+// Terminal manipulation string defines for use in printf()
+#define CLEAR_SCREEN (ESCAPE_STRING "[1;1H]" ESCAPE_STRING "[2J\r") // Clears the screen and moves the cursor to the top left
+#define OPEN_ALTERNATE_SCREEN (ESCAPE_STRING "[?1049h") // Opens an alternate screen for the program
+#define CLOSE_ALTERNATE_SCREEN (ESCAPE_STRING "[?1049l") // Closes the alternate screen and returns to the original one
+
 // Arrow Keys
 #define UP_ARROW    65 // Up Arrow command character for a control sequence.    HEX: 0x41, CHAR: 'A', FULL COMMAND SEQUENCE: "^[[A"
 #define DOWN_ARROW  66 // Down Arrow command character for a control sequence.  HEX: 0x42, CHAR: 'B', FULL COMMAND SEQUENCE: "^[[B"
@@ -35,7 +40,6 @@ typedef struct termios termios;
 
 void enableRawMode(termios *originalTerminal);
 void disableRawMode(termios *originalTerminal);
-void clearScreen(void);
 void moveCursorRelative(int distance, char direction);
 void moveCursorAbsolute(int col, int row);
 
