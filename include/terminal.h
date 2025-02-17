@@ -12,11 +12,15 @@
 #include <termios.h>
 #include <unistd.h>
 
-#define clearScreen() printf("\e[1;1H]\e[2J") // Clears the terminal and places cursor in top right corner
-
 typedef struct termios termios;
 
-#define ESCAPE_STRING "\x1b" // Escape sequence for formatted strings
+/* Keyboard Codes - found using 'showkey -a' in bash */
+
+#define ESCAPE_CHARACTER 27 // Decimal value of the escape control code. Precedes all escape sequences. HEX: 0x1b, CHAR: '^[' 
+#define CONTROL_SEQUENCE_INTRODUCER 91 // Character for introducing a control sequence. HEX: 0x5b, CHAR: '['
+
+#define ESCAPE_STRING "\x1b" // Escape sequence for formatted strings. Can also use '\e'.
+#define NEWLINE "\r\n" // move cursor to beginning of next line
 
 // Arrow Keys
 #define UP_ARROW    65 // Up Arrow command character for a control sequence.    HEX: 0x41, CHAR: 'A', FULL COMMAND SEQUENCE: "^[[A"
@@ -24,9 +28,14 @@ typedef struct termios termios;
 #define RIGHT_ARROW 67 // Right Arrow command character for a control sequence. HEX: 0x43, CHAR: 'C', FULL COMMAND SEQUENCE: "^[[C"
 #define LEFT_ARROW  68 // Left Arrow command character for a control sequence.  HEX: 0x44, CHAR: 'D', FULL COMMAND SEQUENCE: "^[[D"
 
+// TTE Specific definitions
+#define EXIT_COMMAND  4   // Exit the TTE. Ctrl+D, HEX: 0x04
+#define CONFIRM_LOWER 121 // Confirmation from the user to go through with a requested action. HEX: 0x79, CHAR: 'y'
+#define CONFIRM_UPPER 89  // Confirmation from the user to go through with a requested action. HEX: 0x59, CHAR: 'Y'
+
 void enableRawMode(termios *originalTerminal);
 void disableRawMode(termios *originalTerminal);
-
+void clearScreen(void);
 void moveCursorRelative(int distance, char direction);
 void moveCursorAbsolute(int col, int row);
 

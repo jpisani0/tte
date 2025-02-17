@@ -17,6 +17,9 @@ int main(int argc, char** argv)
     // Put terminal into raw mode
     enableRawMode(&originalTerminal);
 
+    // Clear the terminal screen
+    clearScreen();
+
     // Read the input to the terminal as it comes in
     while(read(STDIN_FILENO, &c, 1) == 1)
     {

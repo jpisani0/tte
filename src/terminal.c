@@ -63,6 +63,16 @@ void disableRawMode(termios *originalTerminal)
 }
 
 /**
+ * @brief Clears the terminal and places the cursor in the top left corner
+ * 
+ */
+void clearScreen(void)
+{
+    printf(ESCAPE_STRING "[1;1H]" ESCAPE_STRING "[2J\r");
+    fflush(stdout);
+}
+
+/**
  * @brief Move the cursor relatively from its current location
  * 
  * @param distance - spaces to move the cursor
