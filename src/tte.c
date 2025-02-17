@@ -17,6 +17,8 @@ int main(int argc, char** argv)
     // Put terminal into raw mode
     enableRawMode(&originalTerminal);
 
+    // REVIEW: should stuff like this, being a simple printf() be its own function for clarity? i.e. clearScreen() { printf(CLEAR_SCREEN); fflush(stdout)}
+    // REVIEW: or should there be a rawPrint() function that prints and flushes right after to avoid having to write both lines everytime?
     // Clear the terminal screen
     printf(CLEAR_SCREEN);
     fflush(stdout);
@@ -55,21 +57,19 @@ int main(int argc, char** argv)
 
             if(escapeSequence[0] == CONTROL_SEQUENCE_INTRODUCER)
             {
-                if(escapeSequence[1] == UP_ARROW)
+                // REVIEW: this could probably be just passing the value of escapeSequence[1] through, as long as the escape sequences we are checking are arrow keys (doubtful)
+                switch(escapeSequence[1])
                 {
-                    moveCursorRelative(1, UP_ARROW);
-                }
-                else if(escapeSequence[1] == DOWN_ARROW)
-                {
-                    moveCursorRelative(1, DOWN_ARROW);
-                }
-                else if(escapeSequence[1] == RIGHT_ARROW)
-                {
-                    moveCursorRelative(1, RIGHT_ARROW);
-                }
-                else if(escapeSequence[1] == LEFT_ARROW)
-                {
-                    moveCursorRelative(1, LEFT_ARROW);
+                    case UP_ARROW:
+                    case DOWN_ARROW:
+                    case RIGHT_ARROW:
+                    case LEFT_ARROW:
+                        moveCursorRelative(1, escapeSequence[1]);
+                        break;
+
+                    default:
+                        // TODO: proper handling of default case
+                        break;
                 }
             }
         }
