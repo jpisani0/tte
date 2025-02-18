@@ -24,7 +24,7 @@ int main(int argc, char** argv)
     // fflush(stdout);
 
     openAlternateScreen();
-    moveCursorAbsolute(1, 1); // Move the cursor to the top left of the screen
+    moveCursorAbsolute(SCREEN_TOP, SCREEN_LEFT); // Move the cursor to the top left of the screen
 
     // Read the input to the terminal as it comes in
     while(read(STDIN_FILENO, &c, 1) == 1)
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
                 fflush(stdout);
             }
         }
-        else if(c == ESCAPE_CHARACTER)
+        else if(c == ESC_CODE)
         {
             // If the escape sequence is caught, check which control sequence it is
             char escapeSequence[2] = "";

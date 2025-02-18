@@ -16,18 +16,16 @@ typedef struct termios termios;
 
 /* Keyboard Codes - found using 'showkey -a' in bash */
 
-#define ESCAPE_CHARACTER 27 // Decimal value of the escape control code. Precedes all escape sequences. HEX: 0x1b, CHAR: '^[' 
+#define ESC_CODE 27 // Decimal value of the escape control code. Precedes all escape sequences. HEX: 0x1b, CHAR: '^['. Can also use '\e' in formatted strings
 #define CONTROL_SEQUENCE_INTRODUCER 91 // Character for introducing a control sequence. HEX: 0x5b, CHAR: '['
 
-#define ESCAPE_STRING "\x1b" // Escape sequence for formatted strings. Can also use '\e'.
+#define ESC_SEQUENCE "\x1b" // Escape sequence for formatted strings. Can also use '\e'.
 #define NEWLINE "\r\n" // move cursor to beginning of next line
 
 // Terminal manipulation string defines for use in printf()
-#define MOVE_CURSOR_TO_TOP_LEFT "[1;1H]" // Moves the cursor to the top left of the screen
-#define CLEAR_SCREEN "[2J" // Clears the screen
-#define CLEAR_SCREEN (ESCAPE_STRING "[1;1H]" ESCAPE_STRING "[2J\r") // Clears the screen and moves the cursor to the top left
-#define OPEN_ALTERNATE_SCREEN (ESCAPE_STRING "[?1049h") // Opens an alternate screen for the program
-#define CLOSE_ALTERNATE_SCREEN (ESCAPE_STRING "[?1049l") // Closes the alternate screen and returns to the original one
+#define CLEAR_SCREEN (ESC_SEQUENCE "[2J") // Clears the screen
+#define OPEN_ALTERNATE_SCREEN (ESC_SEQUENCE "[?1049h") // Opens an alternate screen for the program
+#define CLOSE_ALTERNATE_SCREEN (ESC_SEQUENCE "[?1049l") // Closes the alternate screen and returns to the original one
 
 // Arrow Keys
 #define UP_ARROW    65 // Up Arrow command character for a control sequence.    HEX: 0x41, CHAR: 'A', FULL COMMAND SEQUENCE: "^[[A"
@@ -39,6 +37,8 @@ typedef struct termios termios;
 #define EXIT_COMMAND  4   // Exit the TTE. Ctrl+D, HEX: 0x04
 #define CONFIRM_LOWER 121 // Confirmation from the user to go through with a requested action. HEX: 0x79, CHAR: 'y'
 #define CONFIRM_UPPER 89  // Confirmation from the user to go through with a requested action. HEX: 0x59, CHAR: 'Y'
+#define SCREEN_TOP 1 // For use in moveCursorAbsolute(SCREEN_TOP, X) to move the cursor to the top of the screen
+#define SCREEN_LEFT 1 // For use in moveCursorAbsolute(X, SCREEN_LEFT) to move the cursor to the left of the screen
 
 void enableRawMode(termios *originalTerminal);
 void disableRawMode(termios *originalTerminal);

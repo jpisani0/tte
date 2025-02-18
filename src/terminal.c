@@ -62,7 +62,7 @@ void disableRawMode(termios *originalTerminal)
     }
 }
 
-// REVIEW: may be able to make the 1 line printf() functions inline to improve optimization and keeping the code simple
+// REVIEW: should consider making these printf() functions inline for optimization while keeping code simple
 /**
  * @brief Opens an alternate screen for the program
  * 
@@ -91,7 +91,7 @@ void closeAlternateScreen(void)
  */
 void moveCursorRelative(int distance, char direction)
 {
-    printf(ESCAPE_STRING "[%d%c", distance, direction);
+    printf(ESC_SEQUENCE "[%d%c", distance, direction);
     fflush(stdout);
 }
 
@@ -103,6 +103,6 @@ void moveCursorRelative(int distance, char direction)
  */
 void moveCursorAbsolute(int col, int row)
 {
-    printf(ESCAPE_STRING "[%d;%dH", col, row);
+    printf(ESC_SEQUENCE "[%d;%dH", col, row);
     fflush(stdout);
 }
