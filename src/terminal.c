@@ -23,7 +23,6 @@ void enableRawMode(termios *originalTerminal)
     const char* functionName = "enableRawMode():";
     termios rawTerminal;
 
-    // REVIEW: should we reset the terminal before exiting if there was an issue when setting attr?
     // Save the original terminal attributes
     if(tcgetattr(STDIN_FILENO, originalTerminal) == TERMINAL_ERROR)
     {

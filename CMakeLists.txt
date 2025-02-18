@@ -5,8 +5,9 @@ cmake_minimum_required(VERSION 3.31)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Set the binary dir
+# Set the binary dir and source dir
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # Set project name
 project(tte)
@@ -15,6 +16,7 @@ project(tte)
 set(SOURCES
     src/tte.c
     src/terminal.c
+    src/rawIO.c
 )
 
 # Add the program executable file

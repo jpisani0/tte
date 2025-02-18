@@ -15,5 +15,6 @@
 #include <string.h>
 
 #include "terminal.h"
+#include "rawIO.h"
 
 #endif
