@@ -62,10 +62,26 @@ void disableRawMode(termios *originalTerminal)
     }
 }
 
-// void openAlternateScreen(void)
-// {
-//     printf( );
-// }
+// REVIEW: may be able to make the 1 line printf() functions inline to improve optimization and keeping the code simple
+/**
+ * @brief Opens an alternate screen for the program
+ * 
+ */
+void openAlternateScreen(void)
+{
+    printf(OPEN_ALTERNATE_SCREEN);
+    fflush(stdout);
+}
+
+/**
+ * @brief Closes the alternate screen and returns to the original screen before the program was called
+ * 
+ */
+void closeAlternateScreen(void)
+{
+    printf(CLOSE_ALTERNATE_SCREEN);
+    fflush(stdout);
+}
 
 /**
  * @brief Move the cursor relatively from its current location
@@ -76,6 +92,7 @@ void disableRawMode(termios *originalTerminal)
 void moveCursorRelative(int distance, char direction)
 {
     printf(ESCAPE_STRING "[%d%c", distance, direction);
+    fflush(stdout);
 }
 
 /**
@@ -87,4 +104,5 @@ void moveCursorRelative(int distance, char direction)
 void moveCursorAbsolute(int col, int row)
 {
     printf(ESCAPE_STRING "[%d;%dH", col, row);
+    fflush(stdout);
 }

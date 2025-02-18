@@ -23,6 +23,8 @@ typedef struct termios termios;
 #define NEWLINE "\r\n" // move cursor to beginning of next line
 
 // Terminal manipulation string defines for use in printf()
+#define MOVE_CURSOR_TO_TOP_LEFT "[1;1H]" // Moves the cursor to the top left of the screen
+#define CLEAR_SCREEN "[2J" // Clears the screen
 #define CLEAR_SCREEN (ESCAPE_STRING "[1;1H]" ESCAPE_STRING "[2J\r") // Clears the screen and moves the cursor to the top left
 #define OPEN_ALTERNATE_SCREEN (ESCAPE_STRING "[?1049h") // Opens an alternate screen for the program
 #define CLOSE_ALTERNATE_SCREEN (ESCAPE_STRING "[?1049l") // Closes the alternate screen and returns to the original one
@@ -40,6 +42,8 @@ typedef struct termios termios;
 
 void enableRawMode(termios *originalTerminal);
 void disableRawMode(termios *originalTerminal);
+void openAlternateScreen(void);
+void closeAlternateScreen(void);
 void moveCursorRelative(int distance, char direction);
 void moveCursorAbsolute(int col, int row);
 

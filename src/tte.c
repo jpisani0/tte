@@ -20,8 +20,11 @@ int main(int argc, char** argv)
     // REVIEW: should stuff like this, being a simple printf() be its own function for clarity? i.e. clearScreen() { printf(CLEAR_SCREEN); fflush(stdout)}
     // REVIEW: or should there be a rawPrint() function that prints and flushes right after to avoid having to write both lines everytime?
     // Clear the terminal screen
-    printf(CLEAR_SCREEN);
-    fflush(stdout);
+    // printf(CLEAR_SCREEN);
+    // fflush(stdout);
+
+    openAlternateScreen();
+    moveCursorAbsolute(1, 1); // Move the cursor to the top left of the screen
 
     // Read the input to the terminal as it comes in
     while(read(STDIN_FILENO, &c, 1) == 1)
@@ -81,6 +84,8 @@ int main(int argc, char** argv)
 
         fflush(stdout); // Immediate output to avoid buffering issues
     }
+
+    closeAlternateScreen();
 
     // Disable raw mode by setting the original terminal attributes
     disableRawMode(&originalTerminal);
