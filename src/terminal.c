@@ -66,7 +66,7 @@ void disableRawMode(termios *originalTerminal)
  * @brief Opens an alternate screen for the program
  * 
  */
-void openAlternateScreen(void)
+void inline openAlternateScreen(void)
 {
     printf(OPEN_ALTERNATE_SCREEN);
     fflush(stdout);
@@ -76,7 +76,7 @@ void openAlternateScreen(void)
  * @brief Closes the alternate screen and returns to the original screen before the program was called
  * 
  */
-void closeAlternateScreen(void)
+void inline closeAlternateScreen(void)
 {
     printf(CLOSE_ALTERNATE_SCREEN);
     fflush(stdout);
@@ -88,7 +88,7 @@ void closeAlternateScreen(void)
  * @param distance - spaces to move the cursor
  * @param direction - direction to move the cursor. UP_ARROW, DOWN_ARROW, RIGHT_ARROW, LEFT_ARROW
  */
-void moveCursorRelative(int distance, char direction)
+void inline moveCursorRelative(int distance, char direction)
 {
     printf(ESC_SEQUENCE "[%d%c", distance, direction);
     fflush(stdout);
@@ -100,7 +100,7 @@ void moveCursorRelative(int distance, char direction)
  * @param col - column to move the cursor to 
  * @param row - row to move the cursor to 
  */
-void moveCursorAbsolute(int col, int row)
+void inline moveCursorAbsolute(int col, int row)
 {
     printf(ESC_SEQUENCE "[%d;%dH", col, row);
     fflush(stdout);
