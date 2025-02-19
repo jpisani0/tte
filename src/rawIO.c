@@ -6,15 +6,11 @@
  * @date 2025-02-17
  */
 
-#include <stdio.h>
 #include <unistd.h>
 
 #include "rawIO.h"
 #include "terminal.h"
 #include "keycodes.h"
-
-#define TRUE 0
-#define FALSE -1
 
 #define EXIT_COMMAND  4   // Exit the TTE. Ctrl+D, HEX: 0x04
 #define CONFIRM_LOWER 121 // Confirmation from the user to go through with a requested action. HEX: 0x79, CHAR: 'y'
@@ -27,13 +23,14 @@ void handleEscapeSequence(void);
 /**
  * @brief Continuously scans for user input when using TTE until they request to exit
  * 
- * @return char 
+ * @return bool - false if user wants to exit, true otherwise
  */
-char scanForInput(void)
+bool scanForInput(void)
 {
     char c = 0;
-    char exit = FALSE;
+    bool exit = true;
 
+    // Read the incoming byte from the user
     if(read(STDIN_FILENO, &c, 1) == 1)
     {
         // Exit if q is entered (just for testing for now)
@@ -43,6 +40,7 @@ char scanForInput(void)
         }
         else if(c == ESC_CODE)
         {
+            // If the escape key code is captured, get the escape sequence and handle accordingly
             handleEscapeSequence();
         }
         else
@@ -54,7 +52,8 @@ char scanForInput(void)
     }
     else
     {
-        exit = TRUE;
+        // If we are not able to read input, close the program
+        exit = false;
     }
 
     return exit;
@@ -68,19 +67,20 @@ char scanForInput(void)
  */
 char exitPrompt(void)
 {
-    char exit = FALSE;
+    char exit = true;
+    char c = 0;
 
+    // Ensure the user wants to exit
     printf("Are you sure you want to exit? (y/N) ");
     fflush(stdout);
 
-    char answer = 0;
-    read(STDIN_FILENO, &answer, 1);
+    read(STDIN_FILENO, &c, 1);
 
-    if(answer == CONFIRM_LOWER || answer == CONFIRM_UPPER)
+    if(c == CONFIRM_LOWER || c == CONFIRM_UPPER)
     {
         printf(NEWLINE "Exiting..." NEWLINE);
         fflush(stdout); // Immediate output to avoid buffering issues
-        exit = TRUE;
+        exit = false;
     }
     else
     {

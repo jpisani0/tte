@@ -1,7 +1,7 @@
 /**
  * @file keycodes.h
  * @author J. Pisani (jgp9201@gmail.com)
- * @brief Contains definitions for common key and sequence codes
+ * @brief Contains definitions for common key and sequence codes and other defines needed across the project
  * @version 0.1
  * @date 2025-02-18
  */

@@ -9,6 +9,9 @@
 #ifndef _RAW_IO_H
 #define _RAW_IO_H
 
-char scanForInput(void);
+#include <stdio.h>
+#include <stdbool.h>
+
+bool scanForInput(void);
 
 #endif
