@@ -31,6 +31,7 @@ int main(int argc, char** argv)
     moveCursorAbsolute(SCREEN_TOP, SCREEN_LEFT);
 
     // TODO: load file here
+    loadFile(options->filename);
 
     // Read the input to the terminal as it comes in until the user asks to exit
     while(scanForInput()) {}
@@ -40,6 +41,9 @@ int main(int argc, char** argv)
 
     // Disable raw mode by setting the original terminal attributes
     disableRawMode(&originalTerminal);
+
+    // Free dynamically allocated memory
+    free((void *)options);
 
     return 0;
 }
@@ -56,7 +60,7 @@ void parseOptionsAndFilename(int argc, char** argv)
     int opt = 0;
 
     // Allocate memory for options
-    options = malloc(sizeof(options));
+    options = (Options *)malloc(sizeof(options));
 
     // Set default options
     options->readonly = false;
@@ -79,7 +83,6 @@ void parseOptionsAndFilename(int argc, char** argv)
 
             default:
                 // Unknown option
-                printf("Error: unknown option\n");
                 printHelp();
                 exit(EXIT_FAILURE);
         }
@@ -100,6 +103,6 @@ void inline printHelp(void)
 {
     printf( "Usage: tte [options] <filename>\n"
             "Options:\n"
-            "\t-r\topen file in read-only mode\n"
-            "\tfilename\tname of file to open.\n");
+            "\t-r\t\topen file in read-only mode\n"
+            "\n\tfilename\tname of file to open\n");
 }

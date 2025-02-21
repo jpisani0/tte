@@ -15,10 +15,10 @@
 
 #include "terminal.h"
 #include "rawIO.h"
-
-#define MAX_FILE_NAME_SIZE 64 // 64 characters // REVIEW: need to find what we can actually support
+#include "textEditor.h"
 
 // REVIEW: should we make a struct to hold options in or an int to use bits to set options
+// TODO: add options to open file on particular line
 typedef struct OPTIONS
 {
     bool readonly; // Open the file in read-only mode

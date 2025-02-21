@@ -61,12 +61,11 @@ void disableRawMode(termios *originalTerminal)
     }
 }
 
-// REVIEW: should consider making these printf() functions inline for optimization while keeping code simple
 /**
  * @brief Opens an alternate screen for the program
  * 
  */
-void inline openAlternateScreen(void)
+inline void openAlternateScreen(void)
 {
     printf(OPEN_ALTERNATE_SCREEN);
     fflush(stdout);
@@ -76,19 +75,21 @@ void inline openAlternateScreen(void)
  * @brief Closes the alternate screen and returns to the original screen before the program was called
  * 
  */
-void inline closeAlternateScreen(void)
+inline void closeAlternateScreen(void)
 {
     printf(CLOSE_ALTERNATE_SCREEN);
     fflush(stdout);
 }
 
+// REVIEW: the move cursor commands might need extra logic to handle when the cursor is at the edge 
+// REVIEW: (for next/prev line and moving horizontally out) so might need to take inline out
 /**
  * @brief Move the cursor relatively from its current location
  * 
  * @param distance - spaces to move the cursor
  * @param direction - direction to move the cursor. UP_ARROW, DOWN_ARROW, RIGHT_ARROW, LEFT_ARROW
  */
-void inline moveCursorRelative(int distance, char direction)
+inline void moveCursorRelative(int distance, char direction)
 {
     printf(ESC_SEQUENCE "[%d%c", distance, direction);
     fflush(stdout);
@@ -100,8 +101,30 @@ void inline moveCursorRelative(int distance, char direction)
  * @param col - column to move the cursor to 
  * @param row - row to move the cursor to 
  */
-void inline moveCursorAbsolute(int col, int row)
+inline void moveCursorAbsolute(int col, int row)
 {
     printf(ESC_SEQUENCE "[%d;%dH", col, row);
     fflush(stdout);
+}
+
+/**
+ * @brief Gets the current size of the terminal by it's rows and columns
+ * 
+ */
+void getTerminalSize(int *terminalRows, int *terminalCols)
+{
+    winsize windowSize;
+
+    // Try to get the windows size from ioctl
+    if(ioctl(STDOUT_FILENO, TIOCGWINSZ, &windowSize) == 0)
+    {
+        *terminalRows = (int)windowSize.ws_row;
+        *terminalCols = (int)windowSize.ws_col;
+    }
+    else
+    {
+        // If we can't, set default window size
+        *terminalRows = DEFAULT_ROW_SIZE;
+        *terminalCols = DEFAULT_COL_SIZE;
+    }
 }

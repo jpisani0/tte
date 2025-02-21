@@ -11,6 +11,7 @@
 
 #include <termios.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
 
 #include "keycodes.h"
 
@@ -25,11 +26,18 @@ typedef struct termios termios;
 #define SCREEN_TOP    1   // moveCursorAbsolute(SCREEN_TOP, X) to move the cursor to the top of the screen
 #define SCREEN_LEFT   1   // moveCursorAbsolute(X, SCREEN_LEFT) to move the cursor to the left of the screen
 
+// Default window size to assume for the terminal
+#define DEFAULT_ROW_SIZE 24
+#define DEFAULT_COL_SIZE 80
+
+typedef struct winsize winsize;
+
 void enableRawMode(termios *originalTerminal);
 void disableRawMode(termios *originalTerminal);
 void openAlternateScreen(void);
 void closeAlternateScreen(void);
 void moveCursorRelative(int distance, char direction);
 void moveCursorAbsolute(int col, int row);
+void getTerminalSize(int *terminalRows, int *terminalCols);
 
 #endif
