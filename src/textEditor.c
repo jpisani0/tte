@@ -27,13 +27,16 @@ void displayLine(Line* line);
  */
 void loadFile(char filename[MAX_FILE_NAME_SIZE])
 {
-    // TODO: Should check if no filename was provided (filename == "")
-    file = fopen(filename, "a"); // Open the file in append mode
-
-    if(file == NULL)
+    // Open the file if it was provided
+    if(strcmp(filename, "") != 0)
     {
-        perror("Failed to open file");
-        exit(EXIT_FAILURE);
+        file = fopen(filename, "a"); // Open the file in append mode
+
+        if(file == NULL)
+        {
+            perror("Failed to open file");
+            exit(EXIT_FAILURE);
+        }
     }
 
     textEditor = (TextEditor *)malloc(sizeof(textEditor)); // Allocate memory for the textEditor struct
