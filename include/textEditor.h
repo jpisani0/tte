@@ -18,14 +18,12 @@
 #define MAX_FILE_NAME_SIZE 64 // 64 characters // REVIEW: need to find what we can actually support
 #define MAX_LINE_SIZE 1024 // Max amount of characters we can read in a line // REVIEW: what is the actual maxa we should put here
 
-typedef struct Line Line;
-
 // Structure to hold all necessary data in a line
 typedef struct Line
 {
     char data[MAX_LINE_SIZE]; // The data/string in the line
-    Line *prev;               // The previous line
-    Line *next;               // The next line
+    struct Line *prev;               // The previous line
+    struct Line *next;               // The next line
     int lineNumber;           // The line number in the text editor (vertical position)
     int lineSize;             // The amount of characters in the line (horizontal position)
     int filePosition;         // Position of this line in the file
@@ -43,6 +41,6 @@ typedef struct TextEditor
     int terminalCols;  // Vertical size of the terminal
 }TextEditor;
 
-void loadFile(char filename[MAX_FILE_NAME_SIZE]);
+void displayFile(void);
 
 #endif

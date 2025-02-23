@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "terminal.h"
 
@@ -22,6 +23,7 @@ void enableRawMode(termios *originalTerminal)
 {
     const char* functionName = "enableRawMode():";
     termios rawTerminal;
+    memset(&rawTerminal, 0, sizeof(termios));
 
     // Save the original terminal attributes
     if(tcgetattr(STDIN_FILENO, originalTerminal) == TERMINAL_ERROR)

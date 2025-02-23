@@ -31,7 +31,7 @@ int main(int argc, char** argv)
     moveCursorAbsolute(SCREEN_TOP, SCREEN_LEFT);
 
     // TODO: load file here
-    loadFile(options->filename);
+    displayFile();
 
     // Read the input to the terminal as it comes in until the user asks to exit
     while(scanForInput()) {}
@@ -60,7 +60,7 @@ void parseOptionsAndFilename(int argc, char** argv)
     int opt = 0;
 
     // Allocate memory for options
-    options = (Options *)malloc(sizeof(options));
+    options = (Options *)calloc(1, sizeof(options));
 
     // Set default options
     options->readonly = false;

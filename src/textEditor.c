@@ -17,83 +17,56 @@
 FILE *file = NULL;
 TextEditor *textEditor = NULL;
 
-void displayLine(Line* line);
+int lineIndex = 0;
+
 
 /**
- * @brief Load and display the chosen file. If no file is provided or 
- *        the provided file does not exist yet, opens an empty text editor
+ * @brief Load a line from the file into memory
  * 
- * @param filename 
+ * @param prev - the previous line in the list
+ * @param next - the next line in the list
+ * @return Line* 
  */
-void loadFile(char filename[MAX_FILE_NAME_SIZE])
+Line* loadLine(Line *prev, Line* next)
 {
-    // Open the file if it was provided
-    if(strcmp(filename, "") != 0)
-    {
-        file = fopen(filename, "a"); // Open the file in append mode
-
-        if(file == NULL)
-        {
-            perror("Failed to open file");
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    textEditor = (TextEditor *)malloc(sizeof(textEditor)); // Allocate memory for the textEditor struct
-
-    if(textEditor == NULL)
-    {
-        perror("Failed to setup text editor");
-        exit(EXIT_FAILURE);
-    }
-
-    // Get the size of the terminal window
-    getTerminalSize(&textEditor->terminalRows, &textEditor->terminalCols);
-
-    for(int lineIndex = 0; lineIndex < textEditor->terminalRows; lineIndex++)
-    {
-        // Doing this without the moveCursorRelative() causes Line 1 to not be printed and the last line to stay blank
-        // printf("Line %d" NEWLINE, lineIndex + 1);
-        
-        // This prints properly
-        printf("Line %d\r", lineIndex + 1);
-        moveCursorRelative(1, DOWN_ARROW);
-    }
-
-    // Move cursor to top left after displaying lines
-    moveCursorAbsolute(SCREEN_TOP, SCREEN_LEFT);
+    Line *line = (Line *)calloc(1, sizeof(Line));
+    snprintf(line->data, MAX_LINE_SIZE, "Line %d, rows %d, cols %d\r", lineIndex + 1, textEditor->terminalRows, textEditor->terminalCols);
+    line->prev = prev;
+    line->next = next;
+    line->lineNumber = 0; // TODO
+    line->lineSize = strlen(line->data);
 }
 
-void loadNextLine(Line *currentLine)
-{
-    Line *nextLine = (Line *)malloc(sizeof(Line));
-
-    fgets(nextLine->data, MAX_LINE_SIZE, file);
-    nextLine->prev = currentLine;
-    nextLine->next = NULL;
-    nextLine->lineNumber = (currentLine == NULL) ? 0 : currentLine->lineNumber + 1;
-    nextLine->lineSize = strlen(nextLine->data);
-}
-
-void unloadNextLine(Line *currentLine)
-{
-    free(currentLine->next);
-    currentLine->next = NULL;
-}
-
-void loadPreviousLine(Line *currentLine)
-{
-    Line* previousLine = (Line *)malloc(sizeof(Line));
-
-    // TODO: need to move index where we are looking in the file back up, prob should track in TextEditor
-    fgets(previousLine->data, MAX_LINE_SIZE, file);
-    previousLine->prev = NULL;
-    previousLine->next = currentLine;
-    previousLine->lineNumber = 0;
-    previousLine->lineSize = strlen(previousLine->data);
-}
-
-void displayLine(Line* line)
+/**
+ * @brief Display a line to the terminal
+ * 
+ * @param line 
+ */
+void displayLine(Line *line)
 {
     printf("%s", line->data);
+}
+
+/**
+ * @brief Display a file to the terminal 
+ * 
+ */
+void displayFile(void)
+{
+    textEditor = (TextEditor *)calloc(1, sizeof(TextEditor));
+
+    getTerminalSize(&textEditor->terminalRows, &textEditor->terminalCols);
+
+    for(lineIndex = 0; lineIndex < textEditor->terminalRows; lineIndex++)
+    {
+        Line* line = loadLine(NULL, NULL);
+        displayLine(line);
+        moveCursorRelative(1, DOWN_ARROW);
+
+        free(line);
+    }
+
+    free(textEditor);
+
+    printf("Done!");
 }
