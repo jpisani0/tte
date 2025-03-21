@@ -12,6 +12,7 @@
 #include <string.h>
 #include <getopt.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #include "terminal.h"
 #include "rawIO.h"
@@ -24,5 +25,10 @@ typedef struct OPTIONS
     bool readonly; // Open the file in read-only mode
     char filename[MAX_FILE_NAME_SIZE]; // Name of the file
 }Options;
+
+Options *options; // Holds user options
+
+void parseOptionsAndFilename(int argc, char** argv);
+void printHelp(void);
 
 #endif

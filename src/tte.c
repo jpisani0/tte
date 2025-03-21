@@ -8,10 +8,7 @@
 
 #include "tte.h"
 
-Options *options; // Holds user options
-
-void parseOptionsAndFilename(int argc, char** argv);
-void printHelp(void);
+// REVIEW: should prob replace all instances of printf() and fflush() with write()
 
 int main(int argc, char** argv)
 {
@@ -31,7 +28,6 @@ int main(int argc, char** argv)
     moveCursorAbsolute(SCREEN_TOP, SCREEN_LEFT);
 
     // TODO: load file here
-    displayFile();
 
     // Read the input to the terminal as it comes in until the user asks to exit
     while(scanForInput()) {}

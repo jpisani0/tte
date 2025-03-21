@@ -14,6 +14,9 @@
 
 #define TERMINAL_ERROR -1
 
+// TODO: should add a "cleanup before exit" function to call before all exit() calls to return the terminal to a normal usable state before exiting
+// TODO: should change all instances of printf() and fflush() to use write() instead, formatting strings using snprintf()
+
 /**
  * @brief Save original terminal attributes and place the terminal into "raw" mode
  * 

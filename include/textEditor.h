@@ -22,8 +22,8 @@
 typedef struct Line
 {
     char data[MAX_LINE_SIZE]; // The data/string in the line
-    struct Line *prev;               // The previous line
-    struct Line *next;               // The next line
+    struct Line *prev;        // The previous line
+    struct Line *next;        // The next line
     int lineNumber;           // The line number in the text editor (vertical position)
     int lineSize;             // The amount of characters in the line (horizontal position)
     int filePosition;         // Position of this line in the file
@@ -41,6 +41,6 @@ typedef struct TextEditor
     int terminalCols;  // Vertical size of the terminal
 }TextEditor;
 
-void displayFile(void);
+void startTextEditor(const char filename[MAX_FILE_NAME_SIZE]);
 
 #endif

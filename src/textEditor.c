@@ -10,63 +10,70 @@
 #include <sys/ioctl.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #include "textEditor.h"
 #include "terminal.h"
 
+#define IS_DIRECTORY 0
+#define FILE_DOES_NOT_EXIST -1
+#define FILE_EXISTS 1
+
 FILE *file = NULL;
 TextEditor *textEditor = NULL;
 
-int lineIndex = 0;
+int doesFileExist(const char filename[MAX_FILE_NAME_SIZE]);
 
 
 /**
- * @brief Load a line from the file into memory
+ * @brief Start the text editor
  * 
- * @param prev - the previous line in the list
- * @param next - the next line in the list
- * @return Line* 
+ * @param filename 
  */
-Line* loadLine(Line *prev, Line* next)
+void startTextEditor(const char filename[MAX_FILE_NAME_SIZE])
 {
-    Line *line = (Line *)calloc(1, sizeof(Line));
-    snprintf(line->data, MAX_LINE_SIZE, "Line %d, rows %d, cols %d\r", lineIndex + 1, textEditor->terminalRows, textEditor->terminalCols);
-    line->prev = prev;
-    line->next = next;
-    line->lineNumber = 0; // TODO
-    line->lineSize = strlen(line->data);
-}
-
-/**
- * @brief Display a line to the terminal
- * 
- * @param line 
- */
-void displayLine(Line *line)
-{
-    printf("%s", line->data);
-}
-
-/**
- * @brief Display a file to the terminal 
- * 
- */
-void displayFile(void)
-{
+    // Allocate memory for the text editor struct
     textEditor = (TextEditor *)calloc(1, sizeof(TextEditor));
 
-    getTerminalSize(&textEditor->terminalRows, &textEditor->terminalCols);
-
-    for(lineIndex = 0; lineIndex < textEditor->terminalRows; lineIndex++)
+    // REVIEW: should move this check to where we are parsing command line options?
+    // Check if the user supplied a file name and check if that file exists
+    switch(doesFileExist(filename))
     {
-        Line* line = loadLine(NULL, NULL);
-        displayLine(line);
-        moveCursorRelative(1, DOWN_ARROW);
+        case IS_DIRECTORY:
+            // Path given is a directory, notify user and exit
+            printf("ERROR: %s is a directory\n");
+            exit(EXIT_FAILURE);
+            break;
 
-        free(line);
+        case FILE_DOES_NOT_EXIST:
+            // File given does not exist, so we will be opening an empty editor
+            break;
+
+        case FILE_EXISTS:
+            // File exists, load the file and open the text editor
+            break;
+
+        default:
+
+            break;
+    }
+}
+
+/**
+ * @brief Checks if the given file exists and check that is a file (not a dir, link, etc.)
+ * 
+ * @param filename 
+ * @return int - 1 if file exists, 0 otherwise
+ */
+int doesFileExist(const char filename[MAX_FILE_NAME_SIZE])
+{
+    struct stat path_stat;
+
+    // Check if the given path exists
+    if(stat(filename, &path_stat) != 0)
+    {
+        return FILE_DOES_NOT_EXIST;
     }
 
-    free(textEditor);
-
-    printf("Done!");
+    return S_ISREG(path_stat.st_mode); // Returns 1 if the given name is a file, 0 if not
 }
